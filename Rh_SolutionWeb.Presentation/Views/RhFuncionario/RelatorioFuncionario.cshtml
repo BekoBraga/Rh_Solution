@@ -1,0 +1,59 @@
+﻿<h5>Relatório de Eventos</h5>
+<p>
+    Preencha os campos para gerar um relatório com seus eventos.
+</p>
+<hr />
+<form>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Departamento Atual:</label>
+            <select class="form-select">
+                <option disabled selected>Selecione o Departamento Atual</option>
+                <option>DESENVOLVIMENTO</option>
+                <option>INFRAESTRUTURA</option>
+                <option>SUPORTE TECNICO</option>
+                <option>GERENCIAMENTO DE REDES</option>
+                <option>CONTROLE DE QUALIDADE</option>
+                <option>SEGURANÇA CIBERNETICA</option>
+                <option>AUDITORIA DE SISTEMAS</option>
+                <option>GERENCIAMENTO DE PROJETOS DE TI</option>
+                <option>AGILE</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Cargo Atual:</label>
+            <select class="form-select">
+                <option disabled selected>Selecione o Cargo Atual</option>
+                <option>DESENVOLVEDOR DE BANCO DE DADOS</option>
+                <option>DESENVOLVEDOR FRONTEND</option>
+                <option>DESENVOLVEDOR BACKEND</option>
+                <option>DESENVOLVEDOR MOBILE</option>
+                <option>ADMINISTRADOR DE REDES</option>
+                <option>ESPECIALISTA EM SEGURANÇA DE REDE</option>
+                <option>ENGENHEIRO DE SISTEMAS LINUX</option>
+                <option>ENGENHEIRO DE SISTEMAS WINDOWS</option>
+                <option>GERENTE DE PROJETOS</option>
+                <option>ANALISTA DE TESTES</option>
+                <option>ENGENHEIRO DE QUALIDADE DE SOFTWARE</option>
+                <option>CONSULTOR DE SEGURANÇA CIBERNÉTICA</option>
+                <option>ANALISTA DE SEGURANÇA DA INFORMAÇÃO</option>
+                <option>ADMINISTRADOR DE BANCO DE DADOS</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Data de Contratação:</label>
+            <input type="date" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <label>Tipo do Relatório:</label> <br />
+            <input type="radio" name="tipo" /> Formato PDF <br />
+            <input type="radio" name="tipo" /> Formato Excel
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <input type="submit" value="Gerar Relatório"
+                   class="btn btn-success" />
+        </div>
+    </div>
+</form>
