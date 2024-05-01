@@ -10,7 +10,7 @@
 {
     <div class="row mb-3">
         <div class="col-md-3">
-            <label>Nome:</label>
+            <label>Primeiro Nome:</label>
             @Html.TextBoxFor(model => model.Nome, new { @class = "form-control", @placeholder = "Informe o Nome do Funcionário" })
             <span class="text-danger">
                 @Html.ValidationMessageFor(model => model.Nome)
