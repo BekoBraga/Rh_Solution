@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Rh_SolutionWeb.Presentation.Models;
 using RhSolution.Infra.Data.Entities;
 using RhSolution.Infra.Data.Interfaces;
+using System.Runtime.Intrinsics.X86;
 
 namespace Rh_SolutionWeb.Presentation.Controllers
 {
@@ -50,6 +51,11 @@ namespace Rh_SolutionWeb.Presentation.Controllers
                     TempData["Mensagem"] = ex.Message;
                 }
             }
+                else
+                {
+                    TempData["MensagemAlerta"] = "Ocorreram erros de validação no preenchimento do formulário.";
+                }
+
             return View(model);
         }
 
@@ -64,9 +70,33 @@ namespace Rh_SolutionWeb.Presentation.Controllers
             //verifica se todos os campos passaram nas regras de validação
             if (ModelState.IsValid)
             {
-              
+                try
+                {
+                    var chave = model.Chave;
+
+                    //realizando a consulta de funcionários
+                    model.Funcionarios = _funcionarioRepository.GetByNome(chave);
+
+                    //verificando se algum evento foi obtido
+                    if (model.Funcionarios.Count > 0)
+                    {
+                        TempData["MensagemSucesso"] = $"{model.Funcionarios.Count} funcionário(s) obtido(s) para a pesquisa";
+                     }
+                    else
+                    {
+                        TempData["MensagemAlerta"]= "Nenhum funcionário foi encontrado para a pesquisa realizada.";
+                    }
+                }
+                catch (Exception e)
+                {
+                    TempData["MensagemErro"] = e.Message;
+                }
             }
-            return View();
+            else
+            {
+                TempData["MensagemAlerta"] = "Ocorreram erros de validação no preenchimento do formulário.";
+            }
+            return View(model);
         }
 
         public IActionResult EdicaoFuncionario()

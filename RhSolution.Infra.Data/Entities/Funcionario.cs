@@ -59,5 +59,8 @@ namespace RhSolution.Infra.Data.Entities
         public int IdDepartamento { get; set; }
         public int IdCargo { get; set; }
         public decimal Salario { get; set; }
+        public DateTime DataContratãcao { get; set; }
+        public string? Chave { get; set; }
+        public string? Email { get; set; }
     }
 }

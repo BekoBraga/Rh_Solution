@@ -3,6 +3,7 @@ using RhSolution.Infra.Data.Entities;
 using RhSolution.Infra.Data.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -61,9 +62,17 @@ namespace RhSolution.Infra.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Funcionario> GetByNome(string nome)
+        public List<Funcionario> GetByNome(string chave)
         {
-            throw new NotImplementedException();
+            List<Funcionario> funcionarios;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                // Execute a stored procedure to populate the data
+                funcionarios = connection.Query<Funcionario>("SPC_FUNCIONARIO", new { @CHAVE = chave }, commandType: CommandType.StoredProcedure).ToList();
+            }
+
+            return funcionarios;
         }
     }
 }

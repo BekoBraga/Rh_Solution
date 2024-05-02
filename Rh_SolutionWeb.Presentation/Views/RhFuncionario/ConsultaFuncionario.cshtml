@@ -6,22 +6,19 @@
     Preencha os campos para consultar os Funcionários.
 </p>
 <hr />
-<form>
+
+@using (Html.BeginForm())
+{
     <div class="row mb-3">
-        <div class="col-md-3">
-            <label>Informe o Nome:</label>
-            @Html.TextBoxFor(model => model.Nome, new{ @class = "form-control", @placeholder = "Nome não é obrigatório"})
-            <span class="text-danger">
-                @Html.ValidationMessageFor(model => model.Nome)
-            </span>
-        </div>
-        <div class="col-md-3">
-            <label>Informe a Chave do Funcionário:</label>
-            @Html.TextBoxFor(model => model.Chave, new { @class = "form-control", @placeholder = "Chave é Obrigatória" })
-            <span class="text-danger">
-                @Html.ValidationMessageFor(model => model.Chave)
-            </span>
-        </div>
+       
+    <div class="col-md-3">
+    <label>Chave:</label>
+    @Html.TextBoxFor(model => model.Chave,new {@class = "form-control" })
+    <span class="text-danger">
+    @Html.ValidationMessageFor(model => model.Chave)
+    </span>
+    </div>
+ 
     </div>
     <div class="row mb-3">
         <div class="col-md-12">
@@ -29,38 +26,52 @@
                    class="btn btn-success" />
         </div>
     </div>
-</form>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Nome do Funcionário</th>
-            <th>Chave</th>
-            <th>Email</th>
-            <th>Departamento</th>
-            <th>Cargo</th>
-            <th>Salário Atual</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                <a href="/RhFuncionario/EdicaoFuncionario"
-                   class="btn btn-primary btn-sm">Alterar</a>
-                <a href="#" class="btn btn-danger btn-sm">Excluir</a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="7">
-                Quantidade de Funcionários: 0
-            </td>
-        </tr>
-    </tfoot>
-</table>
+}
+
+@if (Model != null && Model.Funcionarios != null && Model.Funcionarios.Count > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nome do Funcionário</th>
+                <th>Cpf</th>
+                <th>Chave</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th>Departamento</th>
+                <th>Salário Atual</th>
+                <th>Data de Contratação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.Funcionarios)
+            {
+                <tr>
+                    <td>@item.Nome </td>
+                    <td>@item.Cpf</td>
+                    <td>@item.Chave</td>
+                    <td>@item.Email</td>
+                    <td>@item.IdCargo</td>
+                    <td>@item.IdDepartamento </td>
+                    <td>@item.Salario</td>
+                    <td>@item.DataContratãcao </td>
+                    <td>
+                        <a href="/RhFuncionario/EdicaoFuncionario"
+                           class="btn btn-primary btn-sm">Alterar</a>
+                        <a href="#" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+
+        
+        <tfoot>
+            <tr>
+                <td colspan="8">
+                    Quantidade de Funcionários: 0
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}
