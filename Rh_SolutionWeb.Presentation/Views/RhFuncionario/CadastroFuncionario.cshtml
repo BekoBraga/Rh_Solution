@@ -16,13 +16,7 @@
                 @Html.ValidationMessageFor(model => model.Nome)
             </span>
         </div>
-        <div class="col-md-3">
-            <label>Sobrenome:</label>
-            @Html.TextBoxFor(model => model.Sobrenome, new { @class = "form-control", @placeholder = "Informe o Sobrenome do Funcionário" })
-            <span class="text-danger">
-                @Html.ValidationMessageFor(model => model.Sobrenome)
-            </span>
-        </div>
+        
         <div class="col-md-3">
             <label>Data de Nascimento:</label>
             @Html.TextBoxFor(model => model.DataNascimento, new { @type = "date", @class = "form-control" })

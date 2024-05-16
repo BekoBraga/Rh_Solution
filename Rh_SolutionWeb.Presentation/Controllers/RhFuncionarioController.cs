@@ -32,7 +32,6 @@ namespace Rh_SolutionWeb.Presentation.Controllers
                     var funcionario = new Funcionario
                     {
                         Nome = model.Nome,
-                        Sobrenome = model.Sobrenome,
                         Cpf = model.Cpf,
                         DataNascimento = model.DataNascimento,
                         Genero = model.Genero,

@@ -12,7 +12,6 @@ namespace RhSolution.Infra.Data.Entities
     {
         #region Atributos
         private string _nome;
-        private string _sobrenome;
         private string _cpf;
         #endregion
 
@@ -22,23 +21,11 @@ namespace RhSolution.Infra.Data.Entities
             get => _nome;
             set 
             { 
-                var regex = new Regex("^[A-Za-zÀ-Üà-ü\\s]{3,20}$");
+                var regex = new Regex("^[A-Za-zÀ-Üà-ü\\s]{3,150}$");
                 if (!regex.IsMatch(value))
                 throw new ValidationException ("Nome do funcionário inválido.");
                 _nome = value;
             } 
-        }
-
-        public string Sobrenome
-        {
-            get => _sobrenome;
-            set
-            {
-                var regex = new Regex("^[A-Za-zÀ-Üà-ü\\s]{3,150}$");
-                if (!regex.IsMatch(value))
-                    throw new ValidationException("Sobrenome do funcionário inválido.");
-                _sobrenome = value;
-            }
         }
 
         public string Cpf
@@ -59,7 +46,7 @@ namespace RhSolution.Infra.Data.Entities
         public int IdDepartamento { get; set; }
         public int IdCargo { get; set; }
         public decimal Salario { get; set; }
-        public DateTime DataContratãcao { get; set; }
+        public DateTime DataContratacao { get; set; }
         public string? Chave { get; set; }
         public string? Email { get; set; }
     }

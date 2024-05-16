@@ -4,15 +4,10 @@ namespace Rh_SolutionWeb.Presentation.Models
 {
     public class RhFuncionarioCadastroViewModel
     {
-        [MinLength(3, ErrorMessage = "Por favor, informe no mínimo {1} caracteres.")]
-        [MaxLength(20, ErrorMessage = "Por favor, informe no máximo {1}caracteres.")]
+        [MinLength(10, ErrorMessage = "Por favor, informe no mínimo {1} caracteres.")]
+        [MaxLength(150, ErrorMessage = "Por favor, informe no máximo {1}caracteres.")]
         [Required(ErrorMessage = "Por favor, informe o nome do Funcionário.")]
         public string? Nome { get; set; }
-
-        [MinLength(3, ErrorMessage = "Por favor, informe no mínimo {1} caracteres.")]
-        [MaxLength(150, ErrorMessage = "Por favor, informe no máximo {1}caracteres.")]
-        [Required(ErrorMessage = "Por favor, informe o Sobrenome do Funcionário.")]
-        public string? Sobrenome { get; set; }
 
         [Required(ErrorMessage = "Por favor, informe a data de nascimento do Funcionário.")]
         public DateTime DataNascimento { get; set; }

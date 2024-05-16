@@ -47,14 +47,14 @@
             @foreach(var item in Model.Funcionarios)
             {
                 <tr>
-                    <td>@item.Nome </td>
+                    <td>@item.Nome</td>
                     <td>@item.Cpf</td>
                     <td>@item.Chave</td>
                     <td>@item.Email</td>
                     <td>@item.IdCargo</td>
-                    <td>@item.IdDepartamento </td>
+                    <td>@item.IdDepartamento</td>
                     <td>@item.Salario</td>
-                    <td>@item.DataContratãcao </td>
+                    <td>@item.DataContratacao</td>
                     <td>
                         <a href="/RhFuncionario/EdicaoFuncionario"
                            class="btn btn-primary btn-sm">Alterar</a>
@@ -69,7 +69,7 @@
         <tfoot>
             <tr>
                 <td colspan="8">
-                    Quantidade de Funcionários: 0
+                    Quantidade de Funcionários: @Model.Funcionarios.Count
                 </td>
             </tr>
         </tfoot>

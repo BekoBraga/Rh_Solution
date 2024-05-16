@@ -30,7 +30,6 @@ namespace RhSolution.Infra.Data.Repositories
                 connection.Execute("SPI_RH_FUNCIONARIO ", new
                 {
                     @NOME = obj.Nome,
-                    @SOBRENOME = obj.Sobrenome,
                     @CPF = obj.Cpf,
                     @DT_NASCIMENTO = obj.DataNascimento,
                     @GENERO = obj.Genero,
