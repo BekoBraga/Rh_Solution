@@ -8,13 +8,33 @@
     <title>Service Solutions</title>
     <!-- folhas de estilo CSS -->
     <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <style>
+        body {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .container {
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .navbar, .dropdown-menu {
+            border-radius: 10px;
+        }
+        .nav-link {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 165, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
 </head>
-<body>
+<body onload="document.body.style.opacity='1'" style="opacity:0;">
     <!-- menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Sistema Service</a>
-            <button class="navbar-toggler" type="button" data-bstoggle="collapse" data-bstarget="#navbarSupportedContent" ariacontrols="navbarSupportedContent" aria-expanded="false"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -32,16 +52,16 @@
                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Gerenciar Funcionários
                         </a>
-                        <ul class="dropdown-menu" arialabelledby="navbarDropdown">
+                        <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item"
-                                   href="/RhFuncionario/CadastroFuncionario">
+                                   href="/Funcionario/CadastroFuncionario">
                                     Cadastrar Funcionário
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="/RhFuncionario/ConsultaFuncionario">
+                                   href="/Funcionario/ConsultaFuncionario">
                                     Consultar Funcionários
                                 </a>
                             </li>
@@ -59,7 +79,7 @@
                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Gerenciar Empresas
                         </a>
-                        <ul class="dropdown-menu" arialabelledby="navbarDropdown">
+                        <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item"
                                    href="/Empresa/CadastroEmpresa">
@@ -68,14 +88,14 @@
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="/CliFor/ConsultaCliFor">
+                                   href="/Empresa/ConsultaEmpresa">
                                     Consultar Empresas
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="/CliFor/RelatorioCliFor">
+                                   href="/Empresa/RelatorioEmpresa">
                                     Relatório de Empresas
                                 </a>
                             </li>
@@ -92,97 +112,9 @@
     <!-- arquivos de estensão JS -->
     <script src="~/js/bootstrap.js"></script>
     <script>
-            document.getElementById("Cnpj").addEventListener("input", async function () {
-            let cnpj = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-            this.value = formatarCNPJ(cnpj); // Aplica a máscara
-
-            if (cnpj.length === 14) {
-                if (!validarCNPJ(cnpj)) {
-                    alert("CNPJ inválido!");
-                    return;
-                }
-
-                try {
-                    let response = await fetch(`/Empresa/BuscarEmpresaPorCnpj?cnpj=${cnpj}`);
-                    if (response.ok) {
-                        let data = await response.json();
-
-                        // Debug: Exibir os dados recebidos no console
-                        console.log("Resposta da API:", data);
-
-                        document.getElementById("RazaoSocial").value = data.razaoSocial ?? "";
-                        document.getElementById("NomeFantasia").value = data.nomeFantasia ?? "";
-                        document.getElementById("Logradouro").value = data.logradouro ?? "";
-                        document.getElementById("Numero").value = isNaN(data.numero) ? data.numero ?? "" : String(Number(data.numero));
-                        document.getElementById("Complemento").value = data.complemento ?? "";
-                        document.getElementById("Bairro").value = data.bairro ?? "";
-                        document.getElementById("Municipio").value = data.municipio ?? "";
-                        document.getElementById("Uf").value = data.uf ?? "";
-                        document.getElementById("Cep").value = formatarCEP(data.cep ?? "");
-
-                    } else {
-                        alert("Empresa não encontrada.");
-                    }
-                } catch (error) {
-                    alert("Erro ao buscar dados: " + error.message);
-                }
-            }
+        document.addEventListener("DOMContentLoaded", function() {
+            document.body.style.opacity = "1";
         });
-
-        document.getElementById("Cep").addEventListener("input", function () {
-            let cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-            this.value = formatarCEP(cep); // Aplica a máscara
-        });
-
-        function formatarCNPJ(cnpj) {
-            return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
-        }
-
-        function formatarCEP(cep) {
-            return cep.replace(/(\d{5})(\d{3})/, "$1-$2");
-        }
-
-        function validarCNPJ(cnpj) {
-            let invalidos = [
-                "00000000000000", "11111111111111", "22222222222222",
-                "33333333333333", "44444444444444", "55555555555555",
-                "66666666666666", "77777777777777", "88888888888888",
-                "99999999999999"
-            ];
-            if (invalidos.includes(cnpj) || cnpj.length !== 14) return false;
-
-            let tamanho = cnpj.length - 2;
-            let numeros = cnpj.substring(0, tamanho);
-            let digitos = cnpj.substring(tamanho);
-            let soma = 0;
-            let pos = tamanho - 7;
-
-            for (let i = tamanho; i >= 1; i--) {
-                soma += numeros.charAt(tamanho - i) * pos--;
-                if (pos < 2) pos = 9;
-            }
-
-            let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-            if (resultado != digitos.charAt(0)) return false;
-
-            tamanho = tamanho + 1;
-            numeros = cnpj.substring(0, tamanho);
-            soma = 0;
-            pos = tamanho - 7;
-
-            for (let i = tamanho; i >= 1; i--) {
-                soma += numeros.charAt(tamanho - i) * pos--;
-                if (pos < 2) pos = 9;
-            }
-
-            resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-            if (resultado != digitos.charAt(1)) return false;
-
-            return true;
-        }
     </script>
-
-
-
 </body>
 </html>
