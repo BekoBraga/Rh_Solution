@@ -6,12 +6,12 @@ using RhSolution.Infra.Data.Interfaces;
 
 namespace Rh_SolutionWeb.Presentation.Controllers
 {
-    public class RhFuncionarioController : Controller
+    public class FuncionarioController : Controller
     {
         //atributo
         private readonly IFuncionarioRepository _funcionarioRepository;
 
-        public RhFuncionarioController(IFuncionarioRepository funcionarioRepository)
+        public FuncionarioController(IFuncionarioRepository funcionarioRepository)
         {
             _funcionarioRepository = funcionarioRepository;
         }
@@ -22,7 +22,7 @@ namespace Rh_SolutionWeb.Presentation.Controllers
         }
         // POST: Funcionario/Cadastro 
         [HttpPost]
-        public IActionResult CadastroFuncionario(RhFuncionarioCadastroViewModel model)
+        public IActionResult CadastroFuncionario(FuncionarioCadastroViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -31,13 +31,12 @@ namespace Rh_SolutionWeb.Presentation.Controllers
                     var funcionario = new Funcionario
                     {
                         Nome = model.Nome,
-                        Sobrenome = model.Sobrenome,
-                        Cpf = model.Cpf,
-                        DataNascimento = model.DataNascimento,
-                        Genero = model.Genero,
-                        IdDepartamento = model.IdDepartamento,
-                        IdCargo = model.IdCargo,
-                        Salario = (decimal)model.Salario
+                        Email = model.Email,
+                        Telefone = model.Telefone,
+                        ValorHora = model.ValorHora,
+                        Classificacao = model.Classificacao,
+                        Cargo = model.Cargo,
+                        
                     };
 
                     _funcionarioRepository.Create(funcionario);
@@ -59,7 +58,7 @@ namespace Rh_SolutionWeb.Presentation.Controllers
         }
 
         [HttpPost]//Annotation indica que o método será executado no SUBMIT
-        public IActionResult ConsultaFuncionario(RhFuncionarioConsultaViewModel model)
+        public IActionResult ConsultaFuncionario(FuncionarioConsultaViewModel model)
         {
             //verifica se todos os campos passaram nas regras de validação
             if (ModelState.IsValid)

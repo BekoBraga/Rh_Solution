@@ -1,0 +1,75 @@
+﻿@*definindo a classe de modelo de dados utilixada nesta página*@
+@model Rh_SolutionWeb.Presentation.Models.FuncionarioCadastroViewModel
+
+<h5>Cadastro de Funcionários</h5>
+<p>
+    Preencha os dados para cadastrar um novo funcionário
+</p>
+<hr />@* Declare o formulário *@
+@using (Html.BeginForm())
+{
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Nome:</label>
+            @Html.TextBoxFor(model => model.Nome, new { @class = "form-control", @placeholder = "Informe o Nome do Funcionário" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Nome)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>E-mail:</label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Informe o Email" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Email)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>Telefone:</label>
+            @Html.TextBoxFor(model => model.Telefone, new { @class = "form-control", @placeholder = "Informe o Telefone" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Telefone)
+            </span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Valor da Hora:</label>
+            @Html.TextBoxFor(model => model.ValorHora, new { @class = "form-control", @placeholder = "Informe o Valor da hora" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.ValorHora)
+            </span>
+        </div>
+        
+        <div class="col-md-3">
+            <label>Classificação:</label>
+            @Html.DropDownListFor(model => model.Classificacao,
+                     new List<SelectListItem>
+        {
+        new SelectListItem { Text = "MMO", Value = "1" },
+        new SelectListItem { Text = "Parceiro", Value = "2" },
+        new SelectListItem { Text = "Terceiro", Value = "3" },
+        },
+                     "Selecione...", new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Classificacao)
+            </span>
+        </div>
+
+        <div class="col-md-3">
+            <label>Cargo:</label>
+            @Html.TextBoxFor(model => model.Cargo, new { @class = "form-control", @placeholder = "Informe o Cargo" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Cargo)
+            </span>
+        </div>
+    </div>
+    
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <input type="submit" value="Realizar Cadastro" class="btn btn-success" />
+        </div>
+    </div>
+    <h5>
+        @TempData["Mensagem"]
+    </h5>
+}

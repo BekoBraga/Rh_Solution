@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rh_SolutionWeb.Presentation", "Rh_SolutionWeb.Presentation\Rh_SolutionWeb.Presentation.csproj", "{ACF08B53-9370-43C3-A499-B99BAADA7061}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service_SolutionWeb.Presentation", "Rh_SolutionWeb.Presentation\Service_SolutionWeb.Presentation.csproj", "{ACF08B53-9370-43C3-A499-B99BAADA7061}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{3DAC2173-040F-4051-9310-5D09973A67AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Repository", "2 - Repository", "{79F40D9A-B208-472C-9208-6670C94B0927}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhSolution.Infra.Data", "RhSolution.Infra.Data\RhSolution.Infra.Data.csproj", "{B75DAF05-B0CC-4768-A42A-BD1D21850B47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceSolution.Infra.Data", "RhSolution.Infra.Data\ServiceSolution.Infra.Data.csproj", "{B75DAF05-B0CC-4768-A42A-BD1D21850B47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

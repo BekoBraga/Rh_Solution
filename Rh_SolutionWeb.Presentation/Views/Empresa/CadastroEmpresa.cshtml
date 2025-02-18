@@ -1,0 +1,139 @@
+﻿@model Rh_SolutionWeb.Presentation.Models.EmpresaCadastroViewModel
+
+<h5>Cadastro de Empresas</h5>
+<p>
+    Preencha os dados para cadastrar um novo Cliente ou Fornecedor
+</p>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <!-- DropDown para selecionar se a empresa é Cliente ou Fornecedor -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Tipo de Empresa:</label>
+            @Html.DropDownListFor(model => model.TipoEmpresa,
+                     new List<SelectListItem>
+        {
+        new SelectListItem { Text = "Cliente", Value = "Cliente" },
+        new SelectListItem { Text = "Fornecedor", Value = "Fornecedor" }
+        },
+                     "Selecione...", new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.TipoEmpresa)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label>Cnpj:</label>
+            @Html.TextBoxFor(model => model.Cnpj, new { @class = "form-control", @placeholder = "Informe o Cnpj" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Cnpj)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>Razao Social:</label>
+            @Html.TextBoxFor(model => model.RazaoSocial, new { @class = "form-control", @placeholder = "Informe a Razão Social" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.RazaoSocial)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>Nome Fantasia:</label>
+            @Html.TextBoxFor(model => model.NomeFantasia, new { @class = "form-control", @placeholder = "Informe o Nome Fantasia" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.NomeFantasia)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label>Logradouro:</label>
+            @Html.TextBoxFor(model => model.Logradouro, new { @class = "form-control", @placeholder = "Informe o Logradouro" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Logradouro)
+            </span>
+        </div>
+        <div class="col-md-2">
+            <label>Número:</label>
+            @Html.TextBoxFor(model => model.Numero, new { @class = "form-control", @placeholder = "Informe o Número" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Numero)
+            </span>
+        </div>
+        <div class="col-md-2">
+            <label>Complemento:</label>
+            @Html.TextBoxFor(model => model.Complemento, new { @class = "form-control", @placeholder = "Informe o Complemento" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Complemento)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>Bairro:</label>
+            @Html.TextBoxFor(model => model.Bairro, new { @class = "form-control", @placeholder = "Informe o Bairro" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Bairro)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Município:</label>
+            @Html.TextBoxFor(model => model.Municipio, new { @class = "form-control", @placeholder = "Informe o Município" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Municipio)
+            </span>
+        </div>
+        <div class="col-md-1">
+            <label>UF:</label>
+            @Html.TextBoxFor(model => model.Uf, new { @class = "form-control", @placeholder = "UF" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Uf)
+            </span>
+        </div>
+        <div class="col-md-2">
+            <label>Cep:</label>
+            @Html.TextBoxFor(model => model.Cep, new { @class = "form-control", @placeholder = "Informe o Cep" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Cep)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Nome Contato:</label>
+            @Html.TextBoxFor(model => model.NomeContato, new { @class = "form-control", @placeholder = "Informe o Nome do Contato" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.NomeContato)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>Telefone:</label>
+            @Html.TextBoxFor(model => model.Telefone, new { @class = "form-control", @placeholder = "Informe o Telefone" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Telefone)
+            </span>
+        </div>
+        <div class="col-md-4">
+            <label>Email:</label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Informe o Email" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Email)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <input type="submit" value="Realizar Cadastro" class="btn btn-success" />
+        </div>
+    </div>
+    <h5>
+        @TempData["Mensagem"]
+    </h5>
+}

@@ -10,57 +10,61 @@ using System.Threading.Tasks;
 
 namespace RhSolution.Infra.Data.Repositories
 {
-    public class FuncionarioRepository : IFuncionarioRepository
+    public class EmpresaRepository : IEmpresaRepository
     {
         //atributo
         private readonly string _connectionString;
 
-        public FuncionarioRepository(string connectionString)
+        public EmpresaRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
-
-        public void Create(Funcionario obj)
+        public void Create(Empresa obj)
         {
-          
+
             //conexão com banco de dados
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Execute("SPI_FUNCIONARIO ", new
+                connection.Execute("SPI_Empresa ", new
                 {
-                    @NOME           = obj.Nome,
-                    @EMAIL          = obj.Email,
-                    @TELEFONE       = obj.Telefone,
-                    @VALORHORA      = obj.ValorHora,
-                    @MMOPARCEIRO    = obj.Classificacao,
-                    @CARGO          = obj.Cargo,
-                    
+                    @RAZAOSOCIAL = obj.RazaoSocial,
+                    @NOMEFANTASIA = obj.NomeFantasia,
+                    @LOGRADOURO = obj.Logradouro,
+                    @NUMERO = obj.Numero,
+                    @BAIRRO = obj.Bairro,
+                    @MUNICIPIO = obj.Municipio,
+                    @UF = obj.Uf,
+                    @CEP = obj.Cep,
+                    @NOMECONTATO =  obj.NomeContato,
+                    @TELEFONE = obj.Telefone,
+                    @EMAIL = obj.Email,
+
                 },
                 commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
-        public void Update(Funcionario obj)
+        public void Delete(Empresa obj)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Funcionario obj)
+        public List<Empresa> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public List<Funcionario> GetAll()
+        public Empresa GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Funcionario GetById(int id)
+        public List<Empresa> GetByNome(string nome)
         {
             throw new NotImplementedException();
         }
 
-        public List<Funcionario> GetByNome(string nome)
+        public void Update(Empresa obj)
         {
             throw new NotImplementedException();
         }

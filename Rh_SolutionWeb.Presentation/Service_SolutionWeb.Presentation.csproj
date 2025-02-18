@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RhSolution.Infra.Data\RhSolution.Infra.Data.csproj" />
+    <ProjectReference Include="..\RhSolution.Infra.Data\ServiceSolution.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

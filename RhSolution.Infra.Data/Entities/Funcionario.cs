@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace RhSolution.Infra.Data.Entities
 {
@@ -12,8 +13,8 @@ namespace RhSolution.Infra.Data.Entities
     {
         #region Atributos
         private string _nome;
-        private string _sobrenome;
-        private string _cpf;
+        private string _email;
+        
         #endregion
 
         public string Nome
@@ -29,35 +30,26 @@ namespace RhSolution.Infra.Data.Entities
             } 
         }
 
-        public string Sobrenome
+        public string Email
         {
-            get => _sobrenome;
+            get => _email;
             set
             {
-                var regex = new Regex("^[A-Za-zÀ-Üà-ü\\s]{3,150}$");
-                if (!regex.IsMatch(value))
-                    throw new ValidationException("Sobrenome do funcionário inválido.");
-                _sobrenome = value;
+                try
+                {
+                    var addr = new MailAddress(value);
+                    _email = addr.Address;
+                }
+                catch
+                {
+                    throw new ValidationException("Email do funcionário inválido.");
+                }
             }
         }
 
-        public string Cpf
-        {
-            get => _cpf;
-            set
-            {
-                var regex = new Regex("^[0-9]{11}$");
-                if (!regex.IsMatch(value))
-                    throw new ValidationException
-                   ("CPF inválido (Informe 11 digitos numéricos).");
-                _cpf = value;
-            }
-
-        }
-        public DateTime DataNascimento { get; set; }
-        public string? Genero { get; set; }
-        public int IdDepartamento { get; set; }
-        public int IdCargo { get; set; }
-        public decimal Salario { get; set; }
+        public string? Telefone { get; set; }
+        public decimal? ValorHora { get; set; }
+        public string? Classificacao { get; set; }
+        public string? Cargo { get; set; }
     }
 }

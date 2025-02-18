@@ -12,6 +12,11 @@ var connectionString = builder.Configuration.GetConnectionString("RhSolution");
 //Enviar a connection string para a classe FuncionarioRepository
 builder.Services.AddTransient<IFuncionarioRepository>(map => new FuncionarioRepository(connectionString));
 
+
+//Enviar a connection string para a classe EmpresaRepository
+builder.Services.AddTransient<IEmpresaRepository>(map => new EmpresaRepository(connectionString));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

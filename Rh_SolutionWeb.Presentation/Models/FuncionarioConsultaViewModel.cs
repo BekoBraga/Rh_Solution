@@ -2,7 +2,7 @@
 
 namespace Rh_SolutionWeb.Presentation.Models
 {
-    public class RhFuncionarioConsultaViewModel
+    public class FuncionarioConsultaViewModel
     {
         [Required(ErrorMessage ="Por favor, informe o Nome do Fuincionário")]
         public string? Nome { get; set; }
