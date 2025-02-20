@@ -25,8 +25,9 @@ namespace RhSolution.Infra.Data.Repositories
             //conexão com banco de dados
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Execute("SPI_Empresa ", new
+                connection.Execute("SPI_EMPRESA ", new
                 {
+                    @CNPJ = obj.Cnpj,
                     @RAZAOSOCIAL = obj.RazaoSocial,
                     @NOMEFANTASIA = obj.NomeFantasia,
                     @LOGRADOURO = obj.Logradouro,
@@ -38,6 +39,9 @@ namespace RhSolution.Infra.Data.Repositories
                     @NOMECONTATO =  obj.NomeContato,
                     @TELEFONE = obj.Telefone,
                     @EMAIL = obj.Email,
+                    @TIPOEMPRESA = obj.TipoEmpresa,
+                    @COMPLEMENTO = obj.Complemento,
+                    @DEPARTAMENTO = obj.Departamento
 
                 },
                 commandType: System.Data.CommandType.StoredProcedure);

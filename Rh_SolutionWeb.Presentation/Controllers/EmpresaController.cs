@@ -47,6 +47,7 @@ namespace Rh_SolutionWeb.Presentation.Controllers
                         NomeContato = model.NomeContato,
                         Telefone = model.Telefone,
                         Email = model.Email,
+                        Departamento = model.Departamento
                     };
 
                     _empresaRepository.Create(empresa);

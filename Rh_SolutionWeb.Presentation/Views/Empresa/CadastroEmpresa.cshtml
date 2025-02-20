@@ -112,18 +112,25 @@
                 @Html.ValidationMessageFor(model => model.NomeContato)
             </span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label>Telefone:</label>
             @Html.TextBoxFor(model => model.Telefone, new { @class = "form-control", @placeholder = "Informe o Telefone" })
             <span class="text-danger">
                 @Html.ValidationMessageFor(model => model.Telefone)
             </span>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label>Email:</label>
             @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Informe o Email" })
             <span class="text-danger">
                 @Html.ValidationMessageFor(model => model.Email)
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label>Departamento:</label>
+            @Html.TextBoxFor(model => model.Departamento, new { @class = "form-control", @placeholder = "Informe o Departamento" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Departamento)
             </span>
         </div>
     </div>

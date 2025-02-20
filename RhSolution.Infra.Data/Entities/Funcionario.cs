@@ -23,7 +23,7 @@ namespace RhSolution.Infra.Data.Entities
             get => _nome;
             set 
             { 
-                var regex = new Regex("^[A-Za-zÀ-Üà-ü\\s]{3,20}$");
+                var regex = new Regex("^[A-Za-zÀ-Üà-ü\\s]{3,100}$");
                 if (!regex.IsMatch(value))
                 throw new ValidationException ("Nome do funcionário inválido.");
                 _nome = value;
@@ -51,5 +51,7 @@ namespace RhSolution.Infra.Data.Entities
         public decimal? ValorHora { get; set; }
         public string? Classificacao { get; set; }
         public string? Cargo { get; set; }
+        public object? Departamento { get; set; }
+        public int Id { get; set; }
     }
 }

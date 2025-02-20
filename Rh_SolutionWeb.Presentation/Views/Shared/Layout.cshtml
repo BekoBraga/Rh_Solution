@@ -48,7 +48,7 @@
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="/RhFuncionario/RelatorioFuncionario">
+                                   href="/Funcionario/RelatorioFuncionario">
                                     Relatório de Funcionários
                                 </a>
                             </li>
@@ -59,7 +59,7 @@
                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Gerenciar Empresas
                         </a>
-                        <ul class="dropdown-menu" arialabelledby="navbarDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item"
                                    href="/Empresa/CadastroEmpresa">
@@ -68,14 +68,14 @@
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="/CliFor/ConsultaCliFor">
+                                   href="/Empresa/ConsultaEmpresa">
                                     Consultar Empresas
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="/CliFor/RelatorioCliFor">
+                                   href="/Empresa/RelatorioEmpresa">
                                     Relatório de Empresas
                                 </a>
                             </li>
@@ -181,7 +181,10 @@
             return true;
         }
     </script>
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate.unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 
 
 </body>

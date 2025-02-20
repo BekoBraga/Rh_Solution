@@ -26,5 +26,6 @@ namespace Rh_SolutionWeb.Presentation.Models
         public string? NomeContato { get; set; }
         public string? Telefone { get; set; }
         public string? Email { get; set; }
+        public string? Departamento { get; set; }
     }
 }

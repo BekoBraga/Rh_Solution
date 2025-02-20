@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,5 +23,6 @@ namespace RhSolution.Infra.Data.Entities
         public string? Email { get; set; }
         public string? TipoEmpresa { get; set; }
         public string? Complemento { get; set; }
+        public string? Departamento { get; set; }
     }
 }

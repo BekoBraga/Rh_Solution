@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RhSolution.Infra.Data.Entities;
+using System.Collections.Generic;
 
 namespace Rh_SolutionWeb.Presentation.Models
 {
     public class FuncionarioConsultaViewModel
     {
-        [Required(ErrorMessage ="Por favor, informe o Nome do Fuincionário")]
         public string? Nome { get; set; }
 
-        [Required(ErrorMessage = "Por favor, informe a Chave do Fuincionário")]
-        public string? Chave { get; set; }
+        // Adicione a propriedade Resultado com o tipo List<Funcionario>
+        public List<Funcionario> Resultado { get; set; } = new List<Funcionario>();
+
     }
 }
