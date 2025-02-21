@@ -9,7 +9,7 @@ namespace Rh_SolutionWeb.Presentation.Models
         public string? Nome { get; set; }
         public string? Email { get; set; }
         public string? Telefone { get; internal set; }
-        public object? Departamento { get; internal set; }
+        public string? Departamento { get; internal set; }
         public string? Cargo { get; internal set; }
         public decimal? ValorHora { get; internal set; }
         public string? Classificacao { get; internal set; }

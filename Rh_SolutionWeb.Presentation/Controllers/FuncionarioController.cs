@@ -55,60 +55,55 @@ public class FuncionarioController : Controller
 
     [HttpPost]
     public IActionResult ConsultaFuncionario(FuncionarioConsultaViewModel model)
+{
+    if (ModelState.IsValid)
     {
-        if (ModelState.IsValid)
+        try
         {
-            try
+            List<Funcionario> funcionarios = new List<Funcionario>();
+
+            if (string.IsNullOrEmpty(model.Nome))
             {
-                List<Funcionario> funcionarios = new List<Funcionario>();
-
-                if (string.IsNullOrEmpty(model.Nome))
-                {
-                    // Se o Nome estiver vazio, traz todos os funcionários
-                    funcionarios = _funcionarioRepository.GetAll(); // Isso deve retornar uma lista de funcionários
-                }
-                else
-                {
-                    // Caso contrário, traz apenas os funcionários com o nome informado
-                    var funcionario = _funcionarioRepository.GetByName(model.Nome);
-                    if (funcionario != null)
-                    {
-                        funcionarios.Add(funcionario);
-                    }
-                }
-
-                // Inicializa a propriedade Resultado no modelo
-                model.Resultado = funcionarios;
-
-                if (!model.Resultado.Any())
-                {
-                    TempData["Mensagem"] = "Nenhum funcionário encontrado.";
-                }
+                funcionarios = _funcionarioRepository.GetAll();
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Mensagem"] = $"Erro: {ex.GetType().Name} - {ex.Message}";
+                funcionarios = _funcionarioRepository.GetByNameList(model.Nome);
+            }
+
+            // Remover duplicados caso existam
+            model.Resultado = funcionarios.Distinct().ToList();
+
+            if (!model.Resultado.Any())
+            {
+                TempData["Mensagem"] = "Nenhum funcionário encontrado.";
             }
         }
-        return View(model);
+        catch (Exception ex)
+        {
+            TempData["Mensagem"] = $"Erro: {ex.GetType().Name} - {ex.Message}";
+        }
     }
 
+    return View(model);
+}
 
 
     public IActionResult EdicaoFuncionario(int id)
     {
-        var funcionario = _funcionarioRepository.GetById(id);  // Altere para pegar pelo ID
+        // Pega o funcionário pelo ID utilizando o repositório
+        var funcionario = _funcionarioRepository.GetById(id);
 
         if (funcionario == null)
             return NotFound(); // Retorna erro 404 caso o funcionário não exista
 
+        // Criação do viewModel para passar à view
         var viewModel = new FuncionarioEdicaoViewModel
         {
             Id = funcionario.Id,  // Passa o ID para a View
             Nome = funcionario.Nome,
             Email = funcionario.Email,
             Telefone = funcionario.Telefone,
-            Departamento = funcionario.Departamento,
             Cargo = funcionario.Cargo,
             ValorHora = funcionario.ValorHora,
             Classificacao = funcionario.Classificacao,
@@ -117,8 +112,6 @@ public class FuncionarioController : Controller
 
         return View(viewModel);
     }
-
-
     [HttpPost]
     public IActionResult SalvarEdicaoFuncionario(FuncionarioEdicaoViewModel model)
     {
@@ -130,6 +123,7 @@ public class FuncionarioController : Controller
         // Mapeia o ViewModel para o objeto de entidade (Funcionario)
         var funcionario = new Funcionario
         {
+            Id = model.Id,  // Verifique se o Id está correto
             Nome = model.Nome,
             Email = model.Email,
             Telefone = model.Telefone,
@@ -138,12 +132,21 @@ public class FuncionarioController : Controller
             Cargo = model.Cargo
         };
 
-        // Chama o método de atualização no repositório
-        _funcionarioRepository.Update(funcionario);
+        try
+        {
+            _funcionarioRepository.Update(funcionario);
 
-        // Redireciona para a página de listagem ou qualquer outra página após a atualização
+            // Supondo que você tenha algum mecanismo de log ou feedback
+            TempData["Mensagem"] = "Funcionário atualizado com sucesso!";
+        }
+        catch (Exception ex)
+        {
+            TempData["Mensagem"] = $"Erro ao atualizar: {ex.Message}";
+        }
+
         return RedirectToAction("Index");  // Ou outra ação, conforme sua lógica
     }
+
 
     public IActionResult RelatorioFuncionario()
     {

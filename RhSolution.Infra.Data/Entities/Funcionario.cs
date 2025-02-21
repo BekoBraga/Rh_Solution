@@ -51,7 +51,7 @@ namespace RhSolution.Infra.Data.Entities
         public decimal? ValorHora { get; set; }
         public string? Classificacao { get; set; }
         public string? Cargo { get; set; }
-        public object? Departamento { get; set; }
         public int Id { get; set; }
+       
     }
 }

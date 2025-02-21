@@ -11,8 +11,5 @@ namespace RhSolution.Infra.Data.Interfaces
         void Create(T obj);
         void Update(T obj);
         void Delete(T obj);
-
-        List<T> GetAll();
-        T GetById(int id);
     }
 }
