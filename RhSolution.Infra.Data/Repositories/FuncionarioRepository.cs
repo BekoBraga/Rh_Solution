@@ -58,59 +58,44 @@ namespace RhSolution.Infra.Data.Repositories
             }
         }
 
-        public List<Funcionario> GetByNameList(string? nome)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    var funcionarios = connection.Query<Funcionario>(
-                        "SPC_CONSULTAR_FUNCIONARIO",
-                        new { Nome = nome },
-                        commandType: CommandType.StoredProcedure
-                    ).ToList();
-
-                    return funcionarios ?? new List<Funcionario>();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao buscar lista de funcionários por nome.", ex);
-            }
-        }
 
         public void Update(Funcionario funcionario)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var result = connection.Execute(
-                    "SPU_FUNCIONARIO",
-                    new
-                    {
-                        @FUNCIONARIO_ID = funcionario.Id,
-                        @NOVO_EMAIL = funcionario.Email,
-                        @NOVO_TELEFONE = funcionario.Telefone,
-                        @NOVO_VALORHORA = funcionario.ValorHora,
-                        @NOVA_CLASSIFICACAO = funcionario.Classificacao,
-                        @NOVO_CARGO = funcionario.Cargo,
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                try
+                {
+                    // Chamando a stored procedure para atualizar
+                    var result = connection.Execute(
+                        "SPU_FUNCIONARIO",  // Nome da stored procedure
+                        new
+                        {
+                            @FUNCIONARIO_ID = funcionario.Id,
+                            @NOVO_EMAIL = funcionario.Email,
+                            @NOVO_TELEFONE = funcionario.Telefone,
+                            @NOVO_VALORHORA = funcionario.ValorHora,
+                            @NOVA_CLASSIFICACAO = funcionario.Classificacao,
+                            @NOVO_CARGO = funcionario.Cargo,
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
 
-                if (result == 0)
-                {
-                    // Log ou mensagem de erro, pois nada foi atualizado
-                    Console.WriteLine("Nenhum registro foi atualizado.");
+                    if (result == 0)
+                    {
+                        Console.WriteLine("Nenhum registro foi atualizado.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Número de registros atualizados: {result}");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Caso contrário, a operação foi bem-sucedida
-                    Console.WriteLine($"Número de registros atualizados: {result}");
+                    Console.WriteLine($"Erro ao atualizar funcionário: {ex.Message}");
+                    throw;
                 }
             }
         }
-
-
 
         public void Delete(Funcionario funcionario)
         {
@@ -122,7 +107,9 @@ namespace RhSolution.Infra.Data.Repositories
             using (var connection = new SqlConnection(_connectionString))
             {
                 // Retorna todos os funcionários
-                return connection.Query<Funcionario>("SELECT * FROM Funcionario").ToList();
+                return connection.Query<Funcionario>(
+                    "SELECT * FROM FUNCIONARIO WHERE ATIVO = 1 ORDER BY NOME")
+                    .ToList();
             }
         }
 
@@ -137,11 +124,22 @@ namespace RhSolution.Infra.Data.Repositories
             }
         }
 
-
         public List<Funcionario> GetByNome(string nome)
         {
-            // Esta implementação ainda não foi definida, se necessário, implemente-a
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var result = connection.Query<Funcionario>(
+                    "SPC_CONSULTAR_FUNCIONARIO",
+                    new { Nome = nome.Trim() },
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+                // Log para ver o resultado
+                Console.WriteLine($"Resultado encontrado: {result.Count} funcionários");
+
+                return result;
+            }
         }
+
     }
 }

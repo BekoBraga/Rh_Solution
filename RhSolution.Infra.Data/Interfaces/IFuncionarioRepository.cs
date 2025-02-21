@@ -7,7 +7,6 @@ namespace RhSolution.Infra.Data.Interfaces
     {
         List<Funcionario> GetAll();
         Funcionario GetById(int id);
-        List<Funcionario> GetByNameList(string? nome);
-             
+       
     }
 }

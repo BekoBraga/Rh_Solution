@@ -66,10 +66,6 @@ public class FuncionarioController : Controller
             {
                 funcionarios = _funcionarioRepository.GetAll();
             }
-            else
-            {
-                funcionarios = _funcionarioRepository.GetByNameList(model.Nome);
-            }
 
             // Remover duplicados caso existam
             model.Resultado = funcionarios.Distinct().ToList();
@@ -142,10 +138,13 @@ public class FuncionarioController : Controller
         catch (Exception ex)
         {
             TempData["Mensagem"] = $"Erro ao atualizar: {ex.Message}";
+            // Log adicional
+            Console.WriteLine($"Erro ao atualizar funcionário: {ex.Message}");
         }
 
-        return RedirectToAction("Index");  // Ou outra ação, conforme sua lógica
+        return View(model);  // Ou outra ação, conforme sua lógica
     }
+
 
 
     public IActionResult RelatorioFuncionario()
