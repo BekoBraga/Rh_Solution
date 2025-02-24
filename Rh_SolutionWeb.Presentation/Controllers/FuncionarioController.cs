@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Rh_SolutionWeb.Presentation.Models;
 using RhSolution.Infra.Data.Entities;
 using RhSolution.Infra.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Net.Http;
+using System.Diagnostics;
 
 namespace Rh_SolutionWeb.Presentation.Controllers
 {
@@ -80,11 +76,15 @@ namespace Rh_SolutionWeb.Presentation.Controllers
             return View(model);
         }
 
-
+        [HttpGet]
         public IActionResult EdicaoFuncionario(int id)
         {
             var funcionario = _funcionarioRepository.GetById(id);
-            if (funcionario == null) return NotFound();
+
+            if (funcionario == null)
+            {
+                return RedirectToAction("ConsultaFuncionario");
+            }
 
             var viewModel = new FuncionarioEdicaoViewModel
             {
@@ -96,19 +96,23 @@ namespace Rh_SolutionWeb.Presentation.Controllers
                 ValorHora = funcionario.ValorHora,
                 Classificacao = funcionario.Classificacao
             };
+
             return View(viewModel);
         }
+
 
         [HttpPost]
         public IActionResult SalvarEdicaoFuncionario(FuncionarioEdicaoViewModel model)
         {
+            Debug.WriteLine("Chegou no método SalvarEdicaoFuncionario");
+
             if (!ModelState.IsValid) return View(model);
 
             try
             {
                 var funcionario = new Funcionario
                 {
-                    Id = model.Id,
+                    Id = (int)model.Id,
                     Nome = model.Nome,
                     Email = model.Email,
                     Telefone = model.Telefone,
@@ -121,12 +125,17 @@ namespace Rh_SolutionWeb.Presentation.Controllers
                 TempData["Mensagem"] = "Funcionário atualizado com sucesso!";
                 return RedirectToAction("ConsultaFuncionario");
             }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Mensagem"] = ex.Message; // Exibe a mensagem específica do repositório
+            }
             catch (Exception ex)
             {
                 TempData["Mensagem"] = $"Erro ao atualizar: {ex.Message}";
             }
+
             return View(model);
         }
+
     }
 }
-    

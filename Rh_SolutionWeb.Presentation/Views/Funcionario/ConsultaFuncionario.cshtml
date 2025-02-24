@@ -5,6 +5,15 @@
     Preencha os campos para consultar os Funcionários.
 </p>
 <hr />
+
+<!-- Exibindo a mensagem de erro ou sucesso -->
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Mensagem"]
+    </div>
+}
+
 <form method="post">
     <div class="row mb-3">
         <div class="col-md-3">
@@ -66,5 +75,3 @@ else
 {
     <p>Nenhum funcionário encontrado.</p>
 }
-
-

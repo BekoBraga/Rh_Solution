@@ -12,10 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("RhSolution");
 //Enviar a connection string para a classe FuncionarioRepository
 builder.Services.AddTransient<IFuncionarioRepository>(map => new FuncionarioRepository(connectionString));
 
-
 //Enviar a connection string para a classe EmpresaRepository
 builder.Services.AddTransient<IEmpresaRepository>(map => new EmpresaRepository(connectionString));
-
 
 var app = builder.Build();
 
@@ -25,14 +23,13 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 app.UseStaticFiles();
-app.UseRouting();
-app.UseRouting();
+app.UseRouting(); // Mantenha apenas uma chamada para UseRouting()
 app.UseAuthorization();
 
 // Definindo a págia inicial do projeto
 app.MapControllerRoute(
-        name: "default",
-        pattern:"{controller=Home}/{action=Index}"
-    );
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}"
+);
 
-app.Run();  
+app.Run();

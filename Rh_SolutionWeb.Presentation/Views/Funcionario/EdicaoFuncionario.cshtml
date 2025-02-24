@@ -1,8 +1,8 @@
 ﻿@model Rh_SolutionWeb.Presentation.Models.FuncionarioEdicaoViewModel
 
-<form method="post" asp-action="SalvarEdicaoFuncionario">
+<form asp-action="SalvarEdicaoFuncionario" method="post">
+    <input type="hidden" asp-for="Id" />
     <div class="row mb-3">
-        <input type="hidden" name="Id" value="@Model.Id" />
         <div class="col-md-3">
             <label for="Nome" style="font-size: 12px;">Nome:</label>
             @Html.TextBoxFor(model => model.Nome, new { @class = "form-control", @placeholder = "Informe o Nome do Funcionário" })
@@ -61,5 +61,8 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <form asp-action="SalvarEdicaoFuncionario" method="post">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+
 </form>
