@@ -12,6 +12,7 @@ namespace RhSolution.Infra.Data.Repositories
     public class FuncionarioRepository : IFuncionarioRepository
     {
         private readonly string _connectionString;
+        private object nome;
 
         public FuncionarioRepository(string connectionString)
         {
@@ -37,26 +38,42 @@ namespace RhSolution.Infra.Data.Repositories
                 );
             }
         }
-
-        public Funcionario? GetByName(string nome)
+        public List<Funcionario> GetAll()
         {
-            try
+            using (var connection = new SqlConnection(_connectionString))
             {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    return connection.QueryFirstOrDefault<Funcionario>(
-                        "SPC_CONSULTAR_FUNCIONARIO",
-                        new { Nome = nome },
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                // Aqui seria adequado adicionar log da exceção (ex: Serilog, NLog)
-                throw new Exception("Erro ao buscar funcionário por nome.", ex);
+                return connection.Query<Funcionario>(
+                    "SPC_CONSULTAR_FUNCIONARIO",
+                    new { Nome = (string)null },  // Passa NULL para trazer todos os funcionários
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
             }
         }
+
+        public List<Funcionario> GetByName(string name)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var result = connection.Query<Funcionario>(
+                    "SPC_CONSULTAR_FUNCIONARIO",
+                    new { Nome = name.Trim() },  // Corrigido para usar o parâmetro correto
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+                // Log para verificar o resultado
+                Console.WriteLine($"Resultado encontrado: {result.Count} funcionários");
+
+                return result;
+            }
+        }
+
+
+        public Funcionario GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        
 
 
         public void Update(Funcionario funcionario)
@@ -101,45 +118,5 @@ namespace RhSolution.Infra.Data.Repositories
         {
             // Implementar a lógica de exclusão do funcionário conforme necessário
         }
-
-        public List<Funcionario> GetAll()
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                // Retorna todos os funcionários
-                return connection.Query<Funcionario>(
-                    "SELECT * FROM FUNCIONARIO WHERE ATIVO = 1 ORDER BY NOME")
-                    .ToList();
-            }
-        }
-
-        public Funcionario GetById(int id)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                return connection.QueryFirstOrDefault<Funcionario>(
-                    "SELECT * FROM Funcionario WHERE Id = @Id",
-                    new { Id = id }
-                );
-            }
-        }
-
-        public List<Funcionario> GetByNome(string nome)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var result = connection.Query<Funcionario>(
-                    "SPC_CONSULTAR_FUNCIONARIO",
-                    new { Nome = nome.Trim() },
-                    commandType: CommandType.StoredProcedure
-                ).ToList();
-
-                // Log para ver o resultado
-                Console.WriteLine($"Resultado encontrado: {result.Count} funcionários");
-
-                return result;
-            }
-        }
-
     }
 }

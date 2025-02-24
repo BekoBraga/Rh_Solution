@@ -2,27 +2,34 @@
 using Rh_SolutionWeb.Presentation.Models;
 using RhSolution.Infra.Data.Entities;
 using RhSolution.Infra.Data.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Net.Http;
 
-
-public class FuncionarioController : Controller
+namespace Rh_SolutionWeb.Presentation.Controllers
 {
-    private readonly IFuncionarioRepository _funcionarioRepository;
-
-    public FuncionarioController(IFuncionarioRepository funcionarioRepository)
+    public class FuncionarioController : Controller
     {
-        _funcionarioRepository = funcionarioRepository;
-    }
+        private readonly IFuncionarioRepository _funcionarioRepository;
 
-    public IActionResult CadastroFuncionario()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult CadastroFuncionario(FuncionarioCadastroViewModel model)
-    {
-        if (ModelState.IsValid)
+        public FuncionarioController(IFuncionarioRepository funcionarioRepository)
         {
+            _funcionarioRepository = funcionarioRepository;
+        }
+
+        public IActionResult CadastroFuncionario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CadastroFuncionario(FuncionarioCadastroViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
             try
             {
                 var funcionario = new Funcionario
@@ -37,118 +44,89 @@ public class FuncionarioController : Controller
 
                 _funcionarioRepository.Create(funcionario);
                 TempData["Mensagem"] = $"Funcionário {funcionario.Nome} cadastrado com sucesso.";
-
                 ModelState.Clear();
             }
             catch (Exception ex)
             {
                 TempData["Mensagem"] = $"Erro: {ex.Message}";
             }
+            return View(model);
         }
-        return View(model);
-    }
 
-    public IActionResult ConsultaFuncionario()
-    {
-        return View(new FuncionarioConsultaViewModel());
-    }
-
-    [HttpPost]
-    public IActionResult ConsultaFuncionario(FuncionarioConsultaViewModel model)
-{
-    if (ModelState.IsValid)
-    {
-        try
+        public IActionResult ConsultaFuncionario()
         {
-            List<Funcionario> funcionarios = new List<Funcionario>();
+            var model = new FuncionarioConsultaViewModel();
+            return View(model);
+        }
 
-            if (string.IsNullOrEmpty(model.Nome))
+        [HttpPost]
+        public IActionResult ConsultaFuncionario(FuncionarioConsultaViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            try
             {
-                funcionarios = _funcionarioRepository.GetAll();
+                model.Resultado = string.IsNullOrEmpty(model.Nome)
+                    ? _funcionarioRepository.GetAll()  // Retorna todos os funcionários se o nome estiver vazio
+                    : _funcionarioRepository.GetByName(model.Nome);  // Filtra pelo nome se preenchido
+
+                if (!model.Resultado.Any())
+                    TempData["Mensagem"] = "Nenhum funcionário encontrado.";
             }
-
-            // Remover duplicados caso existam
-            model.Resultado = funcionarios.Distinct().ToList();
-
-            if (!model.Resultado.Any())
+            catch (Exception ex)
             {
-                TempData["Mensagem"] = "Nenhum funcionário encontrado.";
+                TempData["Mensagem"] = $"Erro: {ex.GetType().Name} - {ex.Message}";
             }
-        }
-        catch (Exception ex)
-        {
-            TempData["Mensagem"] = $"Erro: {ex.GetType().Name} - {ex.Message}";
-        }
-    }
-
-    return View(model);
-}
-
-
-    public IActionResult EdicaoFuncionario(int id)
-    {
-        // Pega o funcionário pelo ID utilizando o repositório
-        var funcionario = _funcionarioRepository.GetById(id);
-
-        if (funcionario == null)
-            return NotFound(); // Retorna erro 404 caso o funcionário não exista
-
-        // Criação do viewModel para passar à view
-        var viewModel = new FuncionarioEdicaoViewModel
-        {
-            Id = funcionario.Id,  // Passa o ID para a View
-            Nome = funcionario.Nome,
-            Email = funcionario.Email,
-            Telefone = funcionario.Telefone,
-            Cargo = funcionario.Cargo,
-            ValorHora = funcionario.ValorHora,
-            Classificacao = funcionario.Classificacao,
-            Resultado = new List<Funcionario>() // Inicializa a lista como vazia, se necessário
-        };
-
-        return View(viewModel);
-    }
-    [HttpPost]
-    public IActionResult SalvarEdicaoFuncionario(FuncionarioEdicaoViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);  // Retorna à view se houver erro de validação
+            return View(model);
         }
 
-        // Mapeia o ViewModel para o objeto de entidade (Funcionario)
-        var funcionario = new Funcionario
-        {
-            Id = model.Id,  // Verifique se o Id está correto
-            Nome = model.Nome,
-            Email = model.Email,
-            Telefone = model.Telefone,
-            ValorHora = model.ValorHora,
-            Classificacao = model.Classificacao,
-            Cargo = model.Cargo
-        };
 
-        try
+        public IActionResult EdicaoFuncionario(int id)
         {
-            _funcionarioRepository.Update(funcionario);
+            var funcionario = _funcionarioRepository.GetById(id);
+            if (funcionario == null) return NotFound();
 
-            // Supondo que você tenha algum mecanismo de log ou feedback
-            TempData["Mensagem"] = "Funcionário atualizado com sucesso!";
-        }
-        catch (Exception ex)
-        {
-            TempData["Mensagem"] = $"Erro ao atualizar: {ex.Message}";
-            // Log adicional
-            Console.WriteLine($"Erro ao atualizar funcionário: {ex.Message}");
+            var viewModel = new FuncionarioEdicaoViewModel
+            {
+                Id = funcionario.Id,
+                Nome = funcionario.Nome,
+                Email = funcionario.Email,
+                Telefone = funcionario.Telefone,
+                Cargo = funcionario.Cargo,
+                ValorHora = funcionario.ValorHora,
+                Classificacao = funcionario.Classificacao
+            };
+            return View(viewModel);
         }
 
-        return View(model);  // Ou outra ação, conforme sua lógica
-    }
+        [HttpPost]
+        public IActionResult SalvarEdicaoFuncionario(FuncionarioEdicaoViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
 
+            try
+            {
+                var funcionario = new Funcionario
+                {
+                    Id = model.Id,
+                    Nome = model.Nome,
+                    Email = model.Email,
+                    Telefone = model.Telefone,
+                    ValorHora = model.ValorHora,
+                    Classificacao = model.Classificacao,
+                    Cargo = model.Cargo
+                };
 
-
-    public IActionResult RelatorioFuncionario()
-    {
-        return View();
+                _funcionarioRepository.Update(funcionario);
+                TempData["Mensagem"] = "Funcionário atualizado com sucesso!";
+                return RedirectToAction("ConsultaFuncionario");
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensagem"] = $"Erro ao atualizar: {ex.Message}";
+            }
+            return View(model);
+        }
     }
 }
+    
